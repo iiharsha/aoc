@@ -1,6 +1,6 @@
 input = list()
 
-with open('/home/iiharsha/Codes/aoc2k23/2023/input/01.txt','r') as f:
+with open('01.txt','r') as f:
     for line in f:
         input.append(line.rstrip())
 
