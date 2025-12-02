@@ -42,7 +42,12 @@ impl Runner for Day2 {
     }
 
     fn part_two(&mut self) -> Vec<String> {
-        aoclib::output("unsolved")
+        let out = self
+            .ranges
+            .iter()
+            .map(Range::sum_multi_invalid)
+            .sum::<usize>();
+        aoclib::output(out)
     }
 }
 
@@ -58,6 +63,36 @@ impl Range {
             })
             .sum()
     }
+
+    fn sum_multi_invalid(&self) -> usize {
+        let mut invalid_sum = 0;
+
+        for num in self.start..=self.end {
+            let half_digit = num.ilog10().div_ceil(2);
+            for digit_count in 1..=half_digit {
+                let mod_value = 10usize.pow(digit_count);
+                let last_n_digits = num % mod_value;
+                let mut test_num = num / mod_value;
+                if last_n_digits == 0 || last_n_digits.ilog10() + 1 != digit_count {
+                    continue;
+                }
+                let mut found = true;
+                while test_num > 0 {
+                    found = test_num % mod_value == last_n_digits;
+                    if !found {
+                        break;
+                    }
+                    test_num /= mod_value;
+                }
+
+                if found {
+                    invalid_sum += num;
+                    break;
+                }
+            }
+        }
+        invalid_sum
+    }
 }
 
 impl FromStr for Range {
@@ -69,5 +104,28 @@ impl FromStr for Range {
             start: left.parse().unwrap(),
             end: right.parse().unwrap(),
         })
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_multi_invalids1() {
+        let range = Range {
+            start: 824824821,
+            end: 824824827,
+        };
+        assert_eq!(824824824, range.sum_multi_invalid());
+    }
+
+    #[test]
+    fn test_multi_invalids2() {
+        let range = Range {
+            start: 70701,
+            end: 70710,
+        };
+        assert_eq!(0, range.sum_multi_invalid());
     }
 }
