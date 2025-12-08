@@ -13,6 +13,24 @@ impl Day4 {
     pub fn new() -> Self {
         Self::default()
     }
+
+    fn find_accessible(&self) -> Vec<(isize, isize)> {
+        self.rolls
+            .iter()
+            .filter(|roll| {
+                DIRS
+                    .iter()
+                    .map(|dir| {
+                        let (dr, dc) = dir.unit();
+                        (roll.0 + dr, roll.1 + dc)
+                    })
+                    .filter(|pos| self.rolls.contains(pos))
+                    .count()
+                    < 4
+            })
+            .copied()
+            .collect()
+    }
 }
 
 impl Runner for Day4 {
@@ -35,32 +53,28 @@ impl Runner for Day4 {
     }
 
     fn part_one(&mut self) -> Vec<String> {
-        let mut accessible = 0;
-
-        for row in 0..self.rows {
-            for col in 0..self.cols {
-
-            if !self.rolls.contains(&(row, col)) {
-                continue;
-            }
-
-            let mut count: usize = 0;
-
-                for delta in DIRS {
-                    let (dr, dc) = delta.unit();
-                    count += self.rolls.contains(&(row + dr, col + dc)) as usize;
-                }
-
-                if count < 4 {
-                    accessible += 1
-                }
-            }
-        }
-        aoclib::output(accessible)
+        aoclib::output(self.find_accessible().len())
     }
 
     fn part_two(&mut self) -> Vec<String> {
-        aoclib::output("unsolved")
+
+        let mut total_removed = 0;
+
+        loop {
+            let acc = self.find_accessible();
+
+            if acc.is_empty() {
+                break;
+            }
+
+            total_removed += acc.len();
+
+            for roll in &acc {
+                self.rolls.remove(roll);
+            }
+        }
+
+        aoclib::output(total_removed)
     }
 }
 
