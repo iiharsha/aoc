@@ -3,8 +3,8 @@ use aoclib::{Runner, Selector};
 mod day_1;
 mod day_2;
 mod day_3;
-/*
 mod day_4;
+/*
 mod day_5;
 mod day_6;
 mod day_7;
@@ -19,8 +19,8 @@ mod day_12;
 use day_1::*;
 use day_2::*;
 use day_3::*;
-/*
 use day_4::*;
+/*
 use day_5::*;
 use day_6::*;
 use day_7::*;
@@ -47,8 +47,9 @@ fn run_2025(which: Selector) {
     let mut day01 = Day1::new();
     let mut day02 = Day2::new();
     let mut day03 = Day3::new();
+    let mut day04 = Day4::new();
 
-    let mut days: Vec<&mut dyn Runner> = vec![&mut day01, &mut day02, &mut day03];
+    let mut days: Vec<&mut dyn Runner> = vec![&mut day01, &mut day02, &mut day03, &mut day04];
 
     match which {
         Selector::Last => {
