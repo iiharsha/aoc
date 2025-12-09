@@ -4,8 +4,8 @@ mod day_1;
 mod day_2;
 mod day_3;
 mod day_4;
-/*
 mod day_5;
+/*
 mod day_6;
 mod day_7;
 mod day_8;
@@ -20,8 +20,8 @@ use day_1::*;
 use day_2::*;
 use day_3::*;
 use day_4::*;
-/*
 use day_5::*;
+/*
 use day_6::*;
 use day_7::*;
 use day_8::*;
@@ -48,8 +48,9 @@ fn run_2025(which: Selector) {
     let mut day02 = Day2::new();
     let mut day03 = Day3::new();
     let mut day04 = Day4::new();
+    let mut day05 = Day5::new();
 
-    let mut days: Vec<&mut dyn Runner> = vec![&mut day01, &mut day02, &mut day03, &mut day04];
+    let mut days: Vec<&mut dyn Runner> = vec![&mut day01, &mut day02, &mut day03, &mut day04, &mut day05];
 
     match which {
         Selector::Last => {
