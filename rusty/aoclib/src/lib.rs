@@ -1,3 +1,4 @@
+//aoclib/lib.rs
 mod locating;
 pub use locating::*;
 
@@ -33,7 +34,7 @@ pub fn read_lines<T: AsRef<Path>>(pathname: T) -> Vec<String> {
 
 pub fn run_solution<T: Runner + ?Sized>(solution: &mut T) {
     let name = solution.name();
-    println!("--- Advent of Code {}, Day {} ---", name.0, name.1);
+    println!("--- Advent of Code in Rust {}, Day {} ---", name.0, name.1);
 
     let start = Instant::now();
     solution.parse();
