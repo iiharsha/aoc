@@ -2,11 +2,16 @@ package aoclib
 
 import (
 	"bufio"
+	"embed"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
+
+//go:embed input/**
+var inputFile embed.FS
 
 type Runner interface {
 	Name() (year int, day int)
@@ -26,6 +31,31 @@ const (
 type Selector struct {
 	Kind SelectorKind
 	Day  int
+}
+
+type InputType int
+
+const (
+	MainInput InputType = iota
+	TestInput
+)
+
+var CurrentInputType InputType = MainInput
+
+func ReadDayLines(year, day int) []string {
+	path := fmt.Sprintf("input/%d/day_%d.txt", year, day)
+	if CurrentInputType == TestInput {
+		path = fmt.Sprintf("input/%d/tests/day_%d.txt", year, day)
+	}
+
+	fmt.Println(path)
+
+	data, err := inputFile.ReadFile(path)
+	if err != nil {
+		panic("something went wrong while embedding input file")
+	}
+
+	return strings.Split(strings.TrimSpace(string(data)), "\n")
 }
 
 func ReadLines(pathName string) []string {

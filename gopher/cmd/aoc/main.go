@@ -10,6 +10,17 @@ import (
 
 func main() {
 	args := os.Args[1:]
+	var filteredArgs []string
+	aoclib.CurrentInputType = aoclib.MainInput
+
+	for _, arg := range args {
+		if arg == "--test" || arg == "-t" {
+			aoclib.CurrentInputType = aoclib.TestInput
+			continue
+		}
+		filteredArgs = append(filteredArgs, arg)
+	}
+	args = filteredArgs
 
 	var selected aoclib.Selector
 	switch {
@@ -45,4 +56,14 @@ func run2025(selected aoclib.Selector) {
 	case aoclib.SelectOne:
 		aoclib.RunSolution(days[selected.Day-1])
 	}
+}
+
+func setInputType() {
+	args := os.Args[1:]
+	for _, arg := range args {
+		if arg == "--test" || arg == "-t" {
+			aoclib.CurrentInputType = aoclib.TestInput
+		}
+	}
+	aoclib.CurrentInputType = aoclib.MainInput
 }

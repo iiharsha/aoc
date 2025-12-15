@@ -1,3 +1,4 @@
+//aoc2025/src/main.rs
 use aoclib::{Runner, Selector};
 
 mod day_1;
@@ -52,8 +53,9 @@ fn run_2025(which: Selector) {
     let mut day06 = Day6::new();
     let mut day07 = Day7::new();
 
-    let mut days: Vec<&mut dyn Runner> = vec![&mut day01, &mut day02, &mut day03, &mut day04,
-        &mut day05, &mut day06, &mut day07];
+    let mut days: Vec<&mut dyn Runner> = vec![
+        &mut day01, &mut day02, &mut day03, &mut day04, &mut day05, &mut day06, &mut day07,
+    ];
 
     match which {
         Selector::Last => {

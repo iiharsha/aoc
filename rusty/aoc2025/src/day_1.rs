@@ -1,3 +1,4 @@
+//aoc2025/src/day_1.rs
 use std::str::FromStr;
 
 use aoclib::{LineParser, Runner};

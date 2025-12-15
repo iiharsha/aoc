@@ -2,12 +2,13 @@ package day1
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/iiharsha/aoc/gopher/internal/aoclib"
 )
 
 type Day1 struct {
-	// do something here
+	turns []*turn
 }
 
 func (d *Day1) Name() (int, int) {
@@ -15,8 +16,18 @@ func (d *Day1) Name() (int, int) {
 }
 
 func (d *Day1) Parse() {
-	lines := aoclib.ReadLines("input/day_1_test.txt")
+	year, day := d.Name()
+	lines := aoclib.ReadDayLines(year, day)
 	fmt.Println(lines)
+
+	d.turns = make([]*turn, 0, len(lines))
+	for _, line := range lines {
+		d.turns = append(d.turns, parseTurn(line))
+	}
+
+	for _, t := range d.turns {
+		fmt.Println(*t)
+	}
 }
 
 func (d *Day1) PartOne() []string {
@@ -25,4 +36,28 @@ func (d *Day1) PartOne() []string {
 
 func (d *Day1) PartTwo() []string {
 	return aoclib.Output("unsolved")
+}
+
+type direction int
+
+const (
+	left direction = iota
+	right
+)
+
+type turn struct {
+	dir    direction
+	amount int
+}
+
+func parseTurn(s string) *turn {
+	amount, err := strconv.Atoi(s[1:])
+	if err != nil {
+		panic("couldn;t convert input string number to integer")
+	}
+
+	if s[0] == 'L' {
+		return &turn{dir: left, amount: amount}
+	}
+	return &turn{dir: right, amount: amount}
 }
