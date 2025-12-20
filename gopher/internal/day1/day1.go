@@ -1,7 +1,7 @@
 package day1
 
 import (
-	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/iiharsha/aoc/gopher/internal/aoclib"
@@ -17,25 +17,64 @@ func (d *Day1) Name() (int, int) {
 
 func (d *Day1) Parse() {
 	year, day := d.Name()
-	lines := aoclib.ReadDayLines(year, day)
-	fmt.Println(lines)
+	lines, err := aoclib.ReadDayLines(year, day)
+	if err != nil {
+		log.Fatalf("err: %s -> %d", err, year)
+	}
 
 	d.turns = make([]*turn, 0, len(lines))
 	for _, line := range lines {
 		d.turns = append(d.turns, parseTurn(line))
 	}
-
-	for _, t := range d.turns {
-		fmt.Println(*t)
-	}
 }
 
+const startPos = 50
+
 func (d *Day1) PartOne() []string {
-	return aoclib.Output("unsolved")
+	setting := startPos
+	counter := 0
+	for _, t := range d.turns {
+		if t.dir == left {
+			setting = remEuclid(setting-t.amount, 100)
+		} else {
+			setting = (setting + t.amount) % 100
+		}
+
+		if setting == 0 {
+			counter++
+		}
+	}
+	return aoclib.Output(counter)
 }
 
 func (d *Day1) PartTwo() []string {
-	return aoclib.Output("unsolved")
+	setting := startPos
+	counter := 0
+	for _, t := range d.turns {
+		var dir = 1
+		if t.dir == left {
+			dir = -1
+		}
+
+		for t.amount > 0 {
+			setting = remEuclid(setting+dir, 100)
+			if setting == 0 {
+				counter++
+			}
+
+			t.amount--
+		}
+	}
+
+	return aoclib.Output(counter)
+}
+
+func remEuclid(a, b int) int {
+	r := a % b
+	if r < 0 {
+		r += b
+	}
+	return r
 }
 
 type direction int
@@ -53,7 +92,7 @@ type turn struct {
 func parseTurn(s string) *turn {
 	amount, err := strconv.Atoi(s[1:])
 	if err != nil {
-		panic("couldn;t convert input string number to integer")
+		panic("error: converting input string number to integer")
 	}
 
 	if s[0] == 'L' {

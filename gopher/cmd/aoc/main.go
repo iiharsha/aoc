@@ -6,6 +6,7 @@ import (
 
 	"github.com/iiharsha/aoc/gopher/internal/aoclib"
 	"github.com/iiharsha/aoc/gopher/internal/day1"
+	"github.com/iiharsha/aoc/gopher/internal/day2"
 )
 
 func main() {
@@ -44,6 +45,7 @@ func main() {
 func run2025(selected aoclib.Selector) {
 	days := []aoclib.Runner{
 		&day1.Day1{},
+		&day2.Day2{},
 	}
 
 	switch selected.Kind {
@@ -56,14 +58,4 @@ func run2025(selected aoclib.Selector) {
 	case aoclib.SelectOne:
 		aoclib.RunSolution(days[selected.Day-1])
 	}
-}
-
-func setInputType() {
-	args := os.Args[1:]
-	for _, arg := range args {
-		if arg == "--test" || arg == "-t" {
-			aoclib.CurrentInputType = aoclib.TestInput
-		}
-	}
-	aoclib.CurrentInputType = aoclib.MainInput
 }

@@ -3,9 +3,11 @@ package aoclib
 import (
 	"bufio"
 	"embed"
+	"errors"
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -42,7 +44,10 @@ const (
 
 var CurrentInputType InputType = MainInput
 
-func ReadDayLines(year, day int) []string {
+func ReadDayLines(year, day int) ([]string, error) {
+	if year < 2000 {
+		return nil, errors.New("invalid year provided")
+	}
 	path := fmt.Sprintf("input/%d/day_%d.txt", year, day)
 	if CurrentInputType == TestInput {
 		path = fmt.Sprintf("input/%d/tests/day_%d.txt", year, day)
@@ -55,7 +60,7 @@ func ReadDayLines(year, day int) []string {
 		panic("something went wrong while embedding input file")
 	}
 
-	return strings.Split(strings.TrimSpace(string(data)), "\n")
+	return strings.Split(strings.TrimSpace(string(data)), "\n"), nil
 }
 
 func ReadLines(pathName string) []string {
@@ -112,4 +117,13 @@ func printSolution(part int, solution []string, d time.Duration) {
 	ms := d.Milliseconds()
 
 	fmt.Printf("%3d.%03dsecs Part %d: %s\n", ms/1000, ms%1000, part, solution[0])
+}
+
+func MustUint(s string) uint {
+	v, err := strconv.ParseUint(s, 10, 32)
+	if err != nil {
+		panic(err)
+	}
+
+	return uint(v)
 }
