@@ -119,11 +119,11 @@ func printSolution(part int, solution []string, d time.Duration) {
 	fmt.Printf("%3d.%03dsecs Part %d: %s\n", ms/1000, ms%1000, part, solution[0])
 }
 
-func MustUint(s string) uint {
-	v, err := strconv.ParseUint(s, 10, 32)
+func MustUint(s string) uint64 {
+	v, err := strconv.ParseUint(s, 10, 64)
 	if err != nil {
 		panic(err)
 	}
 
-	return uint(v)
+	return v
 }
